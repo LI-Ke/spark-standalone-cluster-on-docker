@@ -1,0 +1,56 @@
+spark-master:
+  build: ./spark
+  hostname: spark-master
+  environment:
+    MASTER: spark://spark-master:7077
+  ports:
+    - 4040:4040
+    - 8042:8042
+    - 7077:7077
+    - 8088:8088
+  expose:
+    - 4040
+    - 8042
+    - 7077
+    - 8088
+  links:
+    - kafka
+  volumes:
+    - ./data:/tmp/data
+    - ./app:/app
+
+
+spark-worker:
+  build: ./spark
+  hostname: spark-worker
+  ports:
+    - 8081:8081
+  expose:
+    - 8081
+  links:
+    - spark-master
+    - kafka
+  volumes:
+    - ./data:/tmp/data
+    - ./app:/app
+
+
+zookeeper:
+  build: ./zookeeper
+  hostname: zookeeper
+  ports:
+    - 2181:2181
+
+
+kafka:
+  build: ./kafka
+  ports:
+    - 9092:9092
+  links:
+    - zookeeper
+  environment:
+    KAFKA_BROKER_ID: 0
+    KAFKA_HOST_NAME: 172.17.0.3 
+    KAFKA_ADVERTISED_PORT: 9092
+    KAFKA_ZOOKEEPER_CONNECT: 172.17.0.2:2181
+    
