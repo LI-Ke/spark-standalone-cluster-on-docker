@@ -4,7 +4,6 @@ MAINTAINER li_ke@yahoo.com
 
 # Environment
 ENV SCALA_VERSION 2.11
-ENV SBT_VERSION 0.13.0
 ENV KAFKA_VERSION 0.8.2.2
 
 ENV HOME /usr/local
@@ -18,17 +17,6 @@ RUN add-apt-repository ppa:webupd8team/java -y  && \
     apt-get --allow-unauthenticated install -y  oracle-java8-installer && \
     apt-get clean
 
-# Install Scala 
-RUN wget https://downloads.typesafe.com/scala/${SCALA_VERSION}.11/scala-${SCALA_VERSION}.11.tgz && \
-    tar -xvzf scala-${SCALA_VERSION}.11.tgz && \
-    mv scala-${SCALA_VERSION}.11 scala && \
-    rm scala-${SCALA_VERSION}.11.tgz
-
-# Install SBT 
-RUN wget https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/sbt-${SBT_VERSION}.tgz && \
-    tar -xvzf sbt-${SBT_VERSION}.tgz && \
-    rm sbt-${SBT_VERSION}.tgz
-
 
 # Install Kafka
 RUN wget http://mirrors.dotsrc.org/apache/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
@@ -38,7 +26,7 @@ RUN wget http://mirrors.dotsrc.org/apache/kafka/${KAFKA_VERSION}/kafka_${SCALA_V
 
 # Configure environment variables
 ENV KAFKA_HOME $HOME/kafka
-ENV PATH $HOME/scala/bin:$HOME/sbt/bin:$HOME/kafka/bin:$PATH
+ENV PATH $HOME/kafka/bin:$PATH
 
 ADD start-kafka.sh /usr/bin/start-kafka.sh 
 
