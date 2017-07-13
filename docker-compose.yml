@@ -15,9 +15,6 @@ spark-master:
     - 8088
   links:
     - kafka
-  volumes:
-    - ./data:/tmp/data
-    - ./app:/app
 
 
 spark-worker:
@@ -30,10 +27,6 @@ spark-worker:
   links:
     - spark-master
     - kafka
-  volumes:
-    - ./data:/tmp/data
-    - ./app:/app
-
 
 zookeeper:
   build: ./zookeeper
