@@ -47,8 +47,8 @@ RUN cd /tmp && \
 ENV PATH $HOME/scala/bin:$HOME/sbt/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
 
 # Deploy spark streaming applications on spark
-ADD app/kafkaConsumer.jar $HOME/app/
-ADD app/kafkaProducer.jar $HOME/app/
+# ADD app/kafkaConsumer.jar $HOME/app/
+# ADD app/kafkaProducer.jar $HOME/app/
 
 # Put data in the container
-ADD data/lubm.nt $HOME/data/
+# ADD data/lubm.nt $HOME/data/
