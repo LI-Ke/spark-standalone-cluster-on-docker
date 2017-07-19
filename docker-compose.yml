@@ -1,5 +1,6 @@
 spark-master:
   build: ./spark
+  command: spark/bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
   hostname: spark-master
   environment:
     MASTER: spark://spark-master:7077
@@ -7,11 +8,13 @@ spark-master:
     - 4040:4040
     - 8042:8042
     - 7077:7077
+    - 8080:8080
     - 8088:8088
   expose:
     - 4040
     - 8042
     - 7077
+    - 8080
     - 8088
   links:
     - kafka
@@ -19,7 +22,10 @@ spark-master:
 
 spark-worker:
   build: ./spark
+  command: spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
   hostname: spark-worker
+  environment:
+    SPARK_WORKER_WEBUI_PORT: 8081
   ports:
     - 8081:8081
   expose:
@@ -33,6 +39,7 @@ zookeeper:
   hostname: zookeeper
   ports:
     - 2181:2181
+  command: bash -c "kafka/bin/zookeeper-server-start.sh kafka/config/zookeeper.properties  && sleep 5s"
 
 
 kafka:
