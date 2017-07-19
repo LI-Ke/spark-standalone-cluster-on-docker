@@ -1,1 +1,3 @@
-# Deploy a spark cluster automatically with docker
+# Running Apache Spark Standalone Cluster on Docker
+
+Have to admit that 
