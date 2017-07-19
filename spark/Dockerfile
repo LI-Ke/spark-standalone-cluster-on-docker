@@ -37,7 +37,6 @@ RUN cd /tmp && \
     rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz && \
     cd /usr/local && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark 
     
-
 # Spark Kafka Streaming
 RUN cd /tmp && \
     wget http://repo1.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8-assembly_${SCALA_VERSION}/${SPARK_VERSION}/spark-streaming-kafka-0-8-assembly_${SCALA_VERSION}-${SPARK_VERSION}.jar && \
@@ -45,10 +44,3 @@ RUN cd /tmp && \
 
 # Configure environment variables
 ENV PATH $HOME/scala/bin:$HOME/sbt/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
-
-# Deploy spark streaming applications on spark
-# ADD app/kafkaConsumer.jar $HOME/app/
-# ADD app/kafkaProducer.jar $HOME/app/
-
-# Put data in the container
-# ADD data/lubm.nt $HOME/data/
