@@ -27,9 +27,3 @@ RUN wget http://mirrors.dotsrc.org/apache/kafka/${KAFKA_VERSION}/kafka_${SCALA_V
 ENV KAFKA_HOME $HOME/kafka
 ENV PATH $HOME/kafka/bin:$PATH
 
-ADD start-zookeeper.sh /usr/bin/start-zookeeper.sh 
-
-# The script needs to have executable permission
-RUN chmod a+x /usr/bin/start-zookeeper.sh
-
-#CMD ["start-zookeeper.sh"]
