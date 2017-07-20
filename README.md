@@ -22,4 +22,15 @@ Since our object is to run a spark streaming applicaion which is a sbt project o
 
 This is a vital part, because the cluster might not work if we don't configure some very important parametres.
 
-With this [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml), we want to make a four-node spark standalone cluster.
+With this [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml), we want to make a four-node spark standalone cluster of which one is for zookeeper, one is for kafka, one is for spark master and one is for spark worker. So we have created 4 servces in [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml).
+
+As you can see, we have defined an order for constructing this cluster step by step by using the key word <b>links</b>. Firstly, we need to build the image of the linked services. In [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml), <b>spark master</b> linked by <b>spark worker</b> links <b>kafka</b>; <b>spark worker</b> links <b>spark master</b> and <b>kafka</b>; <b>kafka</b> links <b>zookeeper</b>. Therefore, the order to build the images of different components of this cluster is : 1). zookeeper  2). kafka  3). spark master  4). spark worker
+
+### zookeeper
+
+To build an image for zookeeper, we need to specify the path of zookeeper's Dockerfile. Defining a hostname for a service will facilitate the access to it. Then we specify the default port 2181 for zookeeper and add a command :
+'''
+bash -c "kafka/bin/zookeeper-server-start.sh kafka/config/zookeeper.properties  && sleep 5s"
+'''
+which will start the zookeeper service when the zookeeper container is running.
+
