@@ -30,9 +30,7 @@ As you can see, we have defined an order for constructing this cluster step by s
 
 To build an image for zookeeper, we need to specify the path of zookeeper's Dockerfile. Defining a hostname for a service will facilitate the access to it. Then we specify the default port 2181 for zookeeper and add a command :
 
-'''
-bash -c "kafka/bin/zookeeper-server-start.sh kafka/config/zookeeper.properties  && sleep 5s"
-'''
+```bash -c "kafka/bin/zookeeper-server-start.sh kafka/config/zookeeper.properties  && sleep 5s"```
 
 which will start the zookeeper service when the zookeeper container is running.
 
