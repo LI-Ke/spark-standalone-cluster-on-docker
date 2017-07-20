@@ -28,9 +28,12 @@ As you can see, we have defined an order for constructing this cluster step by s
 
 ### zookeeper
 
-To build an image for zookeeper, we need to specify the path of zookeeper's Dockerfile. Defining a hostname for a service will facilitate the access to it. Then we specify the default port 2181 for zookeeper and add a command :
+To build an image for zookeeper, we need to specify the path of zookeeper's Dockerfile. Defining a hostname for a service will facilitate the access to it. Then we specify the default port <b>2181</b> for zookeeper and add a command :
 
 ```bash -c "kafka/bin/zookeeper-server-start.sh kafka/config/zookeeper.properties  && sleep 5s"```
 
 which will start the zookeeper service when the zookeeper container is running.
 
+### kafka
+
+For kafka, we add <b>links</b> to specify that to run a kafka, it's necessary to run a zookeeper firstly. The default port of kafka is <b>9092</b>. Since we are in a cluster mode and we only have one kafka broker in our cluster, we will define KAFKA_BROKER_ID as 0. 
