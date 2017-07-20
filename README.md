@@ -74,10 +74,47 @@ At this moment, zookeeper and kafka have been started. What we need to do is to 
 
 ```docker exec -it $(docker-compose ps -q kafka) kafka/bin/kafka-topics.sh --create --zookeeper 172.17.0.2:2181 --replication-factor 1 --partitions 1 --topic S-1i```
 
+In our example, the topic is "S-1i".
+
+
 Copy our applications and data ito the spark worker container
 
-```docker cp kafkaConsumer.jar cluster_spark-worker_1:/usr/local/kafkaConsumer.jar
+```
+docker cp kafkaConsumer.jar cluster_spark-worker_1:/usr/local/kafkaConsumer.jar
 docker cp kafkaProducer.jar cluster_spark-worker_1:/usr/local/kafkaProducer.jar
-docker cp lubm.nt cluster_spark-worker_1:/usr/local/lubm.nt```
+docker cp lubm.nt cluster_spark-worker_1:/usr/local/lubm.nt
+```
 
 
+Submit a kafka consumer application to the cluster. The application will count the number of RDF triples received every second and it takes the broker address, the topic and the number of partitions as parametres.
+
+```
+docker exec -it $(docker-compose ps -q spark-worker) spark-submit --master spark://spark-master:7077 --class sparkStreaming.Receiver kafkaConsumer.jar 172.17.0.3:9092 S-1i 1
+```
+
+
+Launch the kafka producer application to send RDF triples to kafka. It takes the data file path, the broker address, the topic and the number of partitions as parametres.
+
+```
+docker exec -it $(docker-compose ps -q spark-worker) java -jar kafkaProducer.jar lubm.nt 172.17.0.3:9092 S-1i 1
+```
+
+The result in the terminal is :
+![results of consumer](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/results%20of%20consumer.png)
+
+#### Let's look at the web UI of this spark standalone cluster. 
+
+This is the web UI of the master node:
+
+![master web UI](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/master%20web%20ui.png)
+
+In this page we can see that there is a worker in this cluster and there is also a running application which is the kafka consumer.
+
+Here is the worker web UI:
+
+![worker web UI](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/worker%20web%20ui.png)
+
+And here is the application web UI:
+
+
+![application web UI](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/application%20web%20ui.png)
