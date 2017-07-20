@@ -36,4 +36,16 @@ which will start the zookeeper service when the zookeeper container is running.
 
 ### kafka
 
-For kafka, we add <b>links</b> to specify that to run a kafka, it's necessary to run a zookeeper firstly. The default port of kafka is <b>9092</b>. Since we are in a cluster mode and we only have one kafka broker in our cluster, we will define <b>KAFKA_BROKER_ID</b> as 0. 
+For kafka, we add <b>links</b> to indicate that to run a kafka, it's necessary to run a zookeeper firstly. The default port of kafka is <b>9092</b>. Since we are in a cluster mode and we only have one kafka broker in our cluster, we will define <b>KAFKA_BROKER_ID</b> as 0. the <b>KAFKA_HOST_NAME</b> is the ip of this container. Since the kafka container will take the second place and the first container will use 172.17.0.2, the ip of kafka is certainly <b>172.17.0.3</b>. It's not necessary to specify <b>KAFKA_ADVERTISED_PORT</b>. We connect kafka and zookeeper by defining <b>KAFKA_ZOOKEEPER_CONNECT</b> with <b>172.17.0.2:2181</b>
+
+### spark master
+
+The command:
+```spark/bin/spark-class org.apache.spark.deploy.master.Master -h spark-master```
+declares that this service will be used as spark master. And ```spark://spark-master:7077``` defines the host address of the master.
+
+By default, port 7077 is for master and we need to submit our application to this port; the port for your application's dashboard is 4040; 8042 is the port for management web UI of Hadoop node; 8080 is the port for master web UI and 8088 is the port for Hadoop cluster web UI.
+
+### spark worker
+
+
