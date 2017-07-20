@@ -54,7 +54,7 @@ By default, port 7077 is for master and we need to submit our application to thi
 
 declares this service as spark worker of the spark master spark://spark-master:7077. 8081 is the web UI port of this worker.
 
-## Run cluster 
+## Run the cluster 
 
 Go into this project where you can find [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml). 
 
@@ -67,5 +67,17 @@ You will see the results as follows
 ![start docker compose](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/start%20containers.png)
 
 which means that the 4 containers have been created and are running.
+
+## Test the cluster
+
+At this moment, zookeeper and kafka have been started. What we need to do is to create a topic:
+
+```docker exec -it $(docker-compose ps -q kafka) kafka/bin/kafka-topics.sh --create --zookeeper 172.17.0.2:2181 --replication-factor 1 --partitions 1 --topic S-1i```
+
+Copy our applications and data ito the spark worker container
+
+```docker cp kafkaConsumer.jar cluster_spark-worker_1:/usr/local/kafkaConsumer.jar
+docker cp kafkaProducer.jar cluster_spark-worker_1:/usr/local/kafkaProducer.jar
+docker cp lubm.nt cluster_spark-worker_1:/usr/local/lubm.nt```
 
 
