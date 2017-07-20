@@ -62,3 +62,4 @@ Run:
 
 ```docker-compose up -d```
 
+![start docker compose](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/start%20containers.png)
