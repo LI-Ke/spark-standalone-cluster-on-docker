@@ -41,11 +41,15 @@ For kafka, we add <b>links</b> to indicate that to run a kafka, it's necessary t
 ### spark master
 
 The command:
+
 ```spark/bin/spark-class org.apache.spark.deploy.master.Master -h spark-master```
+
 declares that this service will be used as spark master. And ```spark://spark-master:7077``` defines the host address of the master.
 
 By default, port 7077 is for master and we need to submit our application to this port; the port for your application's dashboard is 4040; 8042 is the port for management web UI of Hadoop node; 8080 is the port for master web UI and 8088 is the port for Hadoop cluster web UI.
 
 ### spark worker
 
+```spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077```
 
+declares this service as spark worker of the spark master spark://spark-master:7077. 8081 is the web UI port of this worker.
