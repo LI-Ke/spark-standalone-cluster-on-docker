@@ -36,4 +36,4 @@ which will start the zookeeper service when the zookeeper container is running.
 
 ### kafka
 
-For kafka, we add <b>links</b> to specify that to run a kafka, it's necessary to run a zookeeper firstly. The default port of kafka is <b>9092</b>. Since we are in a cluster mode and we only have one kafka broker in our cluster, we will define KAFKA_BROKER_ID as 0. 
+For kafka, we add <b>links</b> to specify that to run a kafka, it's necessary to run a zookeeper firstly. The default port of kafka is <b>9092</b>. Since we are in a cluster mode and we only have one kafka broker in our cluster, we will define <b>KAFKA_BROKER_ID</b> as 0. 
