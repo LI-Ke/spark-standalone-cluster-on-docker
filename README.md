@@ -62,4 +62,8 @@ Run:
 
 ```docker-compose up -d```
 
+You will see the results as follows
 ![start docker compose](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/start%20containers.png)
+which means that the 4 containers have been created and are running.
+
+
