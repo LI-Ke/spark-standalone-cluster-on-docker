@@ -99,7 +99,8 @@ Launch the kafka producer application to send RDF triples to kafka. It takes the
 docker exec -it $(docker-compose ps -q spark-worker) java -jar kafkaProducer.jar lubm.nt 172.17.0.3:9092 S-1i 1
 ```
 
-The result in the terminal is :
+The output result in the comsumer terminal is :
+
 ![results of consumer](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/results%20of%20consumer.png)
 
 #### Let's look at the web UI of this spark standalone cluster. 
