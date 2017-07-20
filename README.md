@@ -72,7 +72,9 @@ which means that the 4 containers have been created and are running.
 
 At this moment, zookeeper and kafka have been started. What we need to do is to create a topic:
 
-```docker exec -it $(docker-compose ps -q kafka) kafka/bin/kafka-topics.sh --create --zookeeper 172.17.0.2:2181 --replication-factor 1 --partitions 1 --topic S-1i```
+```
+docker exec -it $(docker-compose ps -q kafka) kafka/bin/kafka-topics.sh --create --zookeeper 172.17.0.2:2181 --replication-factor 1 --partitions 1 --topic S-1i
+```
 
 In our example, the topic is "S-1i".
 
