@@ -53,3 +53,12 @@ By default, port 7077 is for master and we need to submit our application to thi
 ```spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077```
 
 declares this service as spark worker of the spark master spark://spark-master:7077. 8081 is the web UI port of this worker.
+
+## Run cluster 
+
+Go into this project where you can find [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml). 
+
+Run:
+
+```docker-compose up -d```
+
