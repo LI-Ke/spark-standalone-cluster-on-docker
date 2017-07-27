@@ -83,8 +83,8 @@ docker exec -it $(docker-compose ps -q kafka) kafka/bin/kafka-topics.sh --create
 In our example, the topic is "S-1i".
 
 ```
-Copy our applications and data ito the spark worker container (if you don't need an user interface, <br/>
-do the following commands. But before, spark master and spark worker should share the same Dockerfile <br/>
+Copy our applications and data ito the spark worker container (if you don't need an user interface, 
+do the following commands. But before, spark master and spark worker should share the same Dockerfile 
 without adding data and applications)
 
 
