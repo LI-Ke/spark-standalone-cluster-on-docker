@@ -14,9 +14,13 @@ Since there is zookeeper in kafka_2.11-0.8.2.2.tgz, we will use the inside zooke
 
 In this [Dockerfile](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/kafka/Dockerfile), We will use the same kafka package kafka_2.11-0.8.2.2.tgz and we will write the same docker code as the docker file for zookeeper except that we will add several commands to start kafka (Actually we need to start zookeeper firstly, so we'll add the start command for zookeeper in [docker-compose.yml](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/docker-compose.yml)).
 
-## Dockerfile for spark
+## Dockerfile for spark master
 
-Since our object is to run a spark streaming applicaion which is a sbt project on a spark cluster, we need to install the environments of java, scala, sbt, spark and spark streaming for a cluster node in this [Dockerfile](https://github.com/LI-Ke/standalone-spark-cluster-on-docker/blob/master/spark/Dockerfile).
+Since our object is to run a spark streaming applicaion which is a sbt project on a spark cluster, we need to install the environments of java, scala, sbt, spark and spark streaming for a cluster node in this [Dockerfile](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/spark-master/Dockerfile). Due to the problem our user interface written in python, we have to add spark applications and data to the master node via this file.
+
+## Dockerfile for spark worker
+
+We have the same [Dockerfile](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/spark-worker/Dockerfile) as spark master except that we don't add spark applications and data to the node.
 
 ## Docker Compose
 
@@ -78,10 +82,10 @@ docker exec -it $(docker-compose ps -q kafka) kafka/bin/kafka-topics.sh --create
 
 In our example, the topic is "S-1i".
 
-
-Copy our applications and data ito the spark worker container
-
 ```
+Copy our applications and data ito the spark worker container (if you don't need an user interface, do the following commands. But before, spark master and spark worker should share the same Dockerfile without adding data and applications)
+
+
 docker cp kafkaConsumer.jar cluster_spark-worker_1:/usr/local/kafkaConsumer.jar
 docker cp kafkaProducer.jar cluster_spark-worker_1:/usr/local/kafkaProducer.jar
 docker cp lubm.nt cluster_spark-worker_1:/usr/local/lubm.nt
@@ -91,14 +95,14 @@ docker cp lubm.nt cluster_spark-worker_1:/usr/local/lubm.nt
 Submit a kafka consumer application to the cluster. The application will count the number of RDF triples received every second and it takes the broker address, the topic and the number of partitions as parametres.
 
 ```
-docker exec -it $(docker-compose ps -q spark-worker) spark-submit --master spark://spark-master:7077 --class sparkStreaming.Receiver kafkaConsumer.jar 172.17.0.3:9092 S-1i 1
+docker exec -it $(docker-compose ps -q spark-master) spark-submit --master spark://spark-master:7077 --class sparkStreaming.Receiver kafkaConsumer.jar 172.17.0.3:9092 S-1i 1
 ```
 
 
 Launch the kafka producer application to send RDF triples to kafka. It takes the data file path, the broker address, the topic and the number of partitions as parametres.
 
 ```
-docker exec -it $(docker-compose ps -q spark-worker) java -jar kafkaProducer.jar lubm.nt 172.17.0.3:9092 S-1i 1
+docker exec -it $(docker-compose ps -q spark-master) java -jar kafkaProducer.jar lubm.nt 172.17.0.3:9092 S-1i 1
 ```
 
 The output result in the comsumer terminal is :
@@ -121,3 +125,13 @@ And here is the application web UI:
 
 
 ![application web UI](https://github.com/LI-Ke/spark-standalone-cluster-on-docker/blob/master/tmp/application%20web%20ui.png)
+
+To stop our running containers, there are two ways:
+```
+docker-compose stop
+```
+will just stop running containers, and
+```
+docker-compose down
+```
+will stop running containers and then delete them.
